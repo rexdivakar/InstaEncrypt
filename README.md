@@ -1,1 +1,5 @@
 # File_Encryptor
+
+*********************************Fi1e EncRypt0R********************************
+This tool is an Open Source AES Standard encrytion tool, Always make sure to 
+backup the encryption key if not the files cannot be reverted back....!
