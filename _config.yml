@@ -1,3 +1,1 @@
 theme: jekyll-theme-cayman
-- name: Telegram Notify
-  uses: appleboy/telegram-action@0.0.3
