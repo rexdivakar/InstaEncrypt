@@ -43,6 +43,11 @@ It is preinstalled in Ubuntu 20.04. To check the version use command :
 python3 --version
 ```
 If it is not preinstalled for some reason, proceed [here][4] and download as per requirement.
+* requirements.txt<br>
+Run the following command in terminal to download the required packags for running the tool locally : 
+```
+pip install -r requirements.txt
+```
 
 [contributors-shield]: https://img.shields.io/github/contributors/rexdivakar/Fi1e-EncRypt0R.svg?style=flat-square
 [contributors-url]: https://github.com/rexdivakar/Fi1e-EncRypt0R/graphs/contributors
