@@ -40,18 +40,16 @@ while buffer!=0:
 			print('Invalid File\n')
 
 	elif ip==2:
-		try:
+
 			fname=input(str('Enter file path: '))
 			if fname[-4:]=='.aes':
 				key=input(str('Enter ur decryption key: '))
-				pyAesCrypt.decryptFile(fname,'Out_'+fname[:-4],key,buffer)
+				pyAesCrypt.decryptFile(fname,fname[:-4],key,buffer)
 				os.remove(fname)
 				print('Decyrption Succesfull...')
 				time.sleep(5)
 			else:
 				print('Invalid Crypto-File\n')
-		except:
-			print('Decryption Failed...\n')
 
 	elif ip==3:
 		
