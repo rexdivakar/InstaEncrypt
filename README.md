@@ -57,8 +57,8 @@ pip install -r requirements.txt
 [stars-url]: https://github.com/rexdivakar/Fi1e-EncRypt0R/stargazers
 [issues-shield]: https://img.shields.io/github/issues/rexdivakar/Fi1e-EncRypt0R.svg?style=flat-square
 [issues-url]: https://github.com/rexdivakar/Fi1e-EncRypt0R/issues
-[license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=flat-square
-[license-url]: https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt
+[license-shield]: https://img.shields.io/github/license/rexdivakar/Fi1e-EncRypt0R.svg?style=flat-square
+[license-url]: https://github.com/rexdivakar/Fi1e-EncRypt0R/blob/master/LICENSE.txt
 [0]:https://www.comparitech.com/blog/information-security/what-is-aes-encryption/
 [1]:https://www.python.org/
 [2]:https://docs.github.com/en/free-pro-team@latest/github/creating-cloning-and-archiving-repositories/cloning-a-repository-from-github
