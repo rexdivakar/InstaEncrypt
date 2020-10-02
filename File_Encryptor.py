@@ -1,8 +1,8 @@
 import hashlib
 import pyAesCrypt
-import random
 import os,time
 import shutil
+import secrets
 
 import email, smtplib, ssl
 from email import encoders
@@ -25,8 +25,7 @@ while buffer!=0:
 		fname=input(str('Enter file path (without quotes): '))
 		#fname='test.zip'
 		try:
-			sub_key="abcdefg!~hijklm#$&*nopqrstuvw-+@xyz02345+/67890A-)(%BCDEFGHIJKLMNOPQRSTUVWXYZ"
-			enc_key =  "".join(random.sample(sub_key,30))
+			enc_key = secrets.token_hex(30)
 			pyAesCrypt.encryptFile(fname,fname+'.aes',enc_key,buffer)
 			os.remove(fname)
 			print('''----------Encryption Sucessfull----------\n \nUser Warning: Make sure to notedown the encryption key,
@@ -57,8 +56,7 @@ while buffer!=0:
 		#fol='Dataset'
 		if not os.path.exists('encrypted_folder'):
 			os.mkdir('encrypted_folder')
-		sub_key="abcdefg!~hijklm#$&*nopqrstuvw-+@xyz02345+/67890A-)(%BCDEFGHIJKLMNOPQRSTUVWXYZ"
-		enc_key =  "".join(random.sample(sub_key,30))
+		enc_key = secrets.token_hex(30)
 		for i in os.listdir(fol):
 			if i[-4:]!='.aes':
 				try:
