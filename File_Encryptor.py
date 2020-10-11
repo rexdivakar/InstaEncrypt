@@ -3,12 +3,43 @@ import pyAesCrypt
 import os,time
 import shutil
 import secrets
+import rsa
 
 import email, smtplib, ssl
 from email import encoders
 from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+
+
+def encrypt_aes_key(aes_key):
+	# generate public and private key for rsa
+	public_key, private_key = rsa.newkeys(1024)
+
+	# encrypt using encryption key with public key
+	rsa_key = rsa.encrypt(aes_key.encode('utf8'), public_key)
+
+	# save rsa key combined with private key in the file named key.pem
+	with open('key.pem', 'wb') as f:
+		private_key = private_key.save_pkcs1()
+		key = rsa_key + b'\n' + private_key
+		f.write(key)
+
+	return
+
+
+def decrypt_aes_key(key_path):
+	# read key from key_path
+	with open(key_path, mode='rb') as f:
+		key = f.read()
+
+	# generate aes key from rsa_key and private_key
+	rsa_key, private_key = key.split(b'\n', maxsplit=1)
+	private_key = rsa.PrivateKey.load_pkcs1(key)
+	aes_key = rsa.decrypt(rsa_key, private_key).decode('utf8')
+
+	return aes_key
+
 
 buffer=64*1024
 
@@ -25,16 +56,14 @@ while buffer!=0:
 		fname=input(str('Enter file path (without quotes): '))
 		#fname='test.zip'
 		try:
-			enc_key = secrets.token_hex(30)
-			pyAesCrypt.encryptFile(fname,fname+'.aes',enc_key,buffer)
+			aes_key = secrets.token_hex(30)
+			pyAesCrypt.encryptFile(fname, fname+'.aes', aes_key, buffer)
+			encrypt_aes_key(aes_key)
 			os.remove(fname)
-			print('''----------Encryption Sucessfull----------\n \nUser Warning: Make sure to notedown the encryption key,
-	failure to do so the data cannot be reverted back ever again.''')
-			print('\nEncryption Key: ',enc_key+'\n')
-			now=time.strftime("%H:%M")
-			with open('C:\\Intel\\'+'temp_key.txt','a+') as f:
-				f.write(fname+'|||'+now+'||||'+enc_key+'\n')
-			time.sleep(10)
+			print(
+				'''----------Encryption Successful----------\n \nUser Warning: Encryption key '''
+				'''is saved in the current directory as file named key.pem'''
+			)
 		except:
 			print('Invalid File\n')
 
@@ -42,56 +71,57 @@ while buffer!=0:
 
 			fname=input(str('Enter file path: '))
 			if fname[-4:]=='.aes':
-				key=input(str('Enter ur decryption key: '))
-				pyAesCrypt.decryptFile(fname,fname[:-4],key,buffer)
+				key_path = input(str('Enter path for decryption key: '))
+				aes_key = decrypt_aes_key(key_path)
+				pyAesCrypt.decryptFile(fname, fname[:-4], aes_key, buffer)
 				os.remove(fname)
-				print('Decyrption Succesfull...')
-				time.sleep(5)
+				print('Decryption Successful...')
 			else:
 				print('Invalid Crypto-File\n')
 
 	elif ip==3:
-		
+
 		fol=input('Enter the folder path (without quotes): ')
 		#fol='Dataset'
 		if not os.path.exists('encrypted_folder'):
 			os.mkdir('encrypted_folder')
-		enc_key = secrets.token_hex(30)
+		aes_key = secrets.token_hex(30)
 		for i in os.listdir(fol):
 			if i[-4:]!='.aes':
 				try:
-					pyAesCrypt.encryptFile(fol+'\\'+i,fol+'\\'+i+'.aes',enc_key,buffer)
+					pyAesCrypt.encryptFile(fol+'\\'+i, fol+'\\'+i+'.aes', aes_key, buffer)
 					shutil.move(fol+'\\'+i+'.aes','encrypted_folder')
 					print('Encrypting...!')
 				except:
 					shutil.rmtree('encrypted_folder')
 					os.mkdir('encrypted_folder')
-					pyAesCrypt.encryptFile(fol+'\\'+i,fol+'\\'+i+'.aes',enc_key,buffer)
+					pyAesCrypt.encryptFile(fol+'\\'+i, fol+'\\'+i+'.aes', aes_key, buffer)
 					shutil.move(fol+'\\'+i+'.aes','encrypted_folder')
 					print('Encrypting...!')
 			else:
 				print('Unable to Encrypt')
-		now=time.strftime("%H:%M")
-		with open('C:\\Intel\\'+'temp_key.txt','a+') as f:
-			f.write('Folder'+'|||'+fol+'|||'+now+'||||'+enc_key+'\n')
-		time.sleep(10)
-		print('''----------Encryption Sucessfull----------\n \nUser Warning: Make sure to notedown the encryption key,
-	failure to do so the data cannot be reverted back ever again.''')
-		print('\nEncryption Key: ',enc_key+'\n') 
+
+		encrypt_aes_key(aes_key)
+
+		print(
+			'''----------Encryption Successful----------\n \nUser Warning: Encryption key '''
+			'''is saved in the current directory as file named key.pem'''
+		)
 
 	elif ip==4:
 		fol='encrypted_folder'
 		if not os.path.exists('dencrypted_folder'):
 			os.mkdir('dencrypted_folder')
-		enc_key=input('Enter the decryption key: ')
+		key_path = input(str('Enter path for decryption key: '))
+		aes_key = decrypt_aes_key(key_path)
 		for i in os.listdir(fol):
 			if i[-4:]=='.aes':
 				try:
-					pyAesCrypt.decryptFile(fol+'\\'+i,fol+'\\'+i[:-4],enc_key,buffer)
+					pyAesCrypt.decryptFile(fol+'\\'+i, fol+'\\'+i[:-4], aes_key, buffer)
 					shutil.move(fol+'\\'+i[:-4],'dencrypted_folder')
 					print('Decrypting...!')
 				except:
-					pyAesCrypt.decryptFile(fol+'\\'+i,fol+'\\'+i[:-4],enc_key,buffer)
+					pyAesCrypt.decryptFile(fol+'\\'+i, fol+'\\'+i[:-4], aes_key, buffer)
 					shutil.move(fol+'\\'+i[:-4],'dencrypted_folder')
 					print('Decrypting...!')	
 			else:
