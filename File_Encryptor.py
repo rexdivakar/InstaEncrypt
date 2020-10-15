@@ -36,9 +36,7 @@ def decrypt_aes_key(key_path):
 	# generate aes key from rsa_key and private_key
 	rsa_key, private_key = key.split(b'\n', maxsplit=1)
 	private_key = rsa.PrivateKey.load_pkcs1(key)
-	aes_key = rsa.decrypt(rsa_key, private_key).decode('utf8')
-
-	return aes_key
+	return rsa.decrypt(rsa_key, private_key).decode('utf8')
 
 
 buffer=64*1024
