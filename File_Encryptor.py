@@ -21,6 +21,8 @@ def encrypt_aes_key(aes_key):
     rsa_key = rsa.encrypt(aes_key.encode('utf8'), public_key)
 
     # save rsa key combined with private key in the file named key.pem
+    if os.path.exists('key.pem'):
+        os.remove('key.pem')
     with open('key.pem', 'wb') as f:
         private_key = private_key.save_pkcs1()
         key = rsa_key + b'\n' + private_key
@@ -109,22 +111,22 @@ while buffer != 0:
 
     elif ip == 4:
         fol = 'encrypted_folder'
-        if not os.path.exists('dencrypted_folder'):
-            os.mkdir('dencrypted_folder')
+        if not os.path.exists('decrypted_folder'):
+            os.mkdir('decrypted_folder')
         key_path = input(str('Enter path for decryption key: '))
         aes_key = decrypt_aes_key(key_path)
         for i in os.listdir(fol):
             if i[-4:] == '.aes':
                 try:
                     pyAesCrypt.decryptFile(fol + '\\' + i, fol + '\\' + i[:-4], aes_key, buffer)
-                    shutil.move(fol + '\\' + i[:-4], 'dencrypted_folder')
+                    shutil.move(fol + '\\' + i[:-4], 'decrypted_folder')
                     print('Decrypting...!')
                 except:
                     pyAesCrypt.decryptFile(fol + '\\' + i, fol + '\\' + i[:-4], aes_key, buffer)
-                    shutil.move(fol + '\\' + i[:-4], 'dencrypted_folder')
+                    shutil.move(fol + '\\' + i[:-4], 'decrypted_folder')
                     print('Decrypting...!')
             else:
-                print('Choose the appropriate dencrypted folder')
+                print('Choose the appropriate decrypted folder')
         shutil.rmtree('encrypted_folder')
         print('Decryption Done...')
 
