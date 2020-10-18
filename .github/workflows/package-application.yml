@@ -35,5 +35,5 @@ jobs:
         with:
           asset_name: File_Encryptor.exe
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: src/dist/windows
+          asset_path: dist/windows
           asset_content_type: application/vnd.microsoft.portable-executable
