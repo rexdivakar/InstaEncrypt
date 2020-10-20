@@ -4,7 +4,7 @@ block_cipher = None
 
 
 a = Analysis(['File_Encryptor.py'],
-             pathex=['C:\\Users\\Yago\\Desktop\\Fi1e-EncRypt0R'],
+             pathex=[],
              binaries=[],
              datas=[],
              hiddenimports=['rsa'],
