@@ -1,6 +1,4 @@
-# This is a basic workflow to help you get started with Actions
-
-name: Package-application-and-release
+name: Package-application
 
 on:
   push:
@@ -15,25 +13,7 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-      # Creates a release
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1.1.4
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          draft: false
-          prerelease: false
       - name: Package application
         uses: JackMcKew/pyinstaller-action-windows@main
         with:
           path: .
-      - name: Upload release
-        uses: actions/upload-release-asset@v1.0.2
-        with:
-          asset_name: File_Encryptor.exe
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: dist/windows
-          asset_content_type: application/vnd.microsoft.portable-executable
