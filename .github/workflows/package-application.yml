@@ -1,0 +1,23 @@
+name: Package-application
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  package:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+      - name: Package application
+        uses: JackMcKew/pyinstaller-action-windows@main
+        with:
+          path: .
+      - uses: actions/upload-artifact@v2
+        with:
+          name: File-Encryptor.exe
+          path: dist/windows

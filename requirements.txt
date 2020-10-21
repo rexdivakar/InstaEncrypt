@@ -1,1 +1,2 @@
 pyAesCrypt==0.4.3
+rsa==4.6
