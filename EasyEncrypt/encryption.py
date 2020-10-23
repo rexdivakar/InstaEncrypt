@@ -18,6 +18,8 @@ class SymmetricEncryption:
             aes_path (str) aes encrypted file path
         """
         aes_key = secrets.token_hex(30)
+
+
         aes_path = path + '.aes'
         pyAesCrypt.encryptFile(path, aes_path, aes_key, bufferSize=64*1024)
         return aes_key, aes_path
@@ -38,13 +40,15 @@ class AsymmetricEncryption:
         public_key, private_key = rsa.newkeys(1024)
 
         # encrypt using encryption key with public key
-        encrypted_key = rsa.encrypt(symmetric_key.encode('utf8'), public_key)
+        encrypted_symmetric_key = rsa.encrypt(symmetric_key.encode('utf8'), public_key)
 
-        # generate private key
+
+
+        #generate private key
         private_key = private_key.save_pkcs1()
 
         # concat encrypted_key and private_key
-        rsa_key = encrypted_key + b'\n' + private_key
+        rsa_key = encrypted_symmetric_key + b"||||||\n" + private_key
 
         return rsa_key
 
@@ -53,10 +57,10 @@ class Encryption(SymmetricEncryption, AsymmetricEncryption):
 
     # we can add more as we progress
     symmetric_encryption_mapping = {
-        'aes': super().to_aes
+        'aes': SymmetricEncryption.to_aes
     }
     asymmetric_encryption_mapping = {
-        'rsa': super().to_rsa
+        'rsa': AsymmetricEncryption.to_rsa
     }
 
     @staticmethod
@@ -80,10 +84,21 @@ class Encryption(SymmetricEncryption, AsymmetricEncryption):
         is_folder = os.path.isdir(path)
 
         if is_folder:
-            shutil.make_archive(path + '.zip', 'zip', path)
-            path = path + '.zip'
+            path = shutil.make_archive(path, 'zip', path)
 
         symmetric_key, encrypted_path = Encryption.symmetric_encryption_mapping[symmetric_method](path)
-        encrypted_key_path = Encryption.asymmetric_encryption_mapping[asymmetric_method](symmetric_key)
+        asymmetric_key = Encryption.asymmetric_encryption_mapping[asymmetric_method](symmetric_key)
 
-        return encrypted_path, encrypted_key_path
+        # remove asymmetric key if already existed
+        asymmetric_key_path = os.path.join(os.path.dirname(os.path.abspath(path)), 'key.pem')
+        if os.path.exists(asymmetric_key_path):
+            os.remove(asymmetric_key_path)
+
+        with open(asymmetric_key_path, 'wb') as f:
+            f.write(asymmetric_key)
+
+        # remove zip folder created for encryption
+        if is_folder:
+            os.remove(path)
+
+        return encrypted_path, asymmetric_key_path
