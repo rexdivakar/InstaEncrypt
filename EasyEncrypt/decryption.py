@@ -43,6 +43,6 @@ class Decryption(SymmetricDecryption, AsymmetricDecryption):
             asymmetric_key = f.read()
 
         symmetric_key = Decryption.asymmetric_decryption_mapping[asymmetric_method](asymmetric_key)
-        decrypted_path = Decryption.symmetric_decryption_mapping[symmetric_method](symmetric_key, path)
-
-        return decrypted_path
+        return Decryption.symmetric_decryption_mapping[symmetric_method](
+            symmetric_key, path
+        )
