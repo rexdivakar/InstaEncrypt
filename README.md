@@ -5,7 +5,7 @@
 [![MIT License][license-shield]][license-url]
 
 ## Table of Contents
-* [About the tool](#about-the-tool)
+* [About the tool](#about-this-tool)
   * [Built With](#built-with)
 * [Getting started](#getting-started)
   * [Working of the tool](#working-of-the-tool)
