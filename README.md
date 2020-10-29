@@ -30,7 +30,7 @@ A file (*temp_key.txt*) for storing the encryption key(s) for file(s)/folder(s) 
 ## Built With
 * [Python][1]
 
-## Getting Started
+## Getting Started 
 To run the tool locally, 
 * Clone the repository. For instructions to [clone][2] the repo proceed [here][3].
 * Follow these steps on your *OS*
