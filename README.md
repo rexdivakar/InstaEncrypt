@@ -99,7 +99,7 @@ pip install -r requirements.txt
 [4]:https://www.python.org/downloads/
 [img1]:https://www.atpinc.com/upload/images/2020/04-22/4e79465eb02f4422a7c4bba9f99ffa09.jpg
 [img2]:https://cdn.ttgtmedia.com/rms/onlineImages/security-aes_design_mobile.jpg
-[img3]:https://github.com/Tawishi/Fi1e-EncRypt0R/blob/update-readme/images/Screenshot%20from%202020-10-01%2021-22-14.png
-[img4]:https://github.com/Tawishi/Fi1e-EncRypt0R/blob/update-readme/images/Screenshot%20from%202020-10-01%2021-24-53.png
-[img5]:https://github.com/Tawishi/Fi1e-EncRypt0R/blob/update-readme/images/Screenshot%20from%202020-10-01%2021-26-17.png
-[img6]:https://github.com/Tawishi/Fi1e-EncRypt0R/blob/update-readme/images/Screenshot%20from%202020-10-01%2021-27-23.png
+[img3]:https://github.com/rexdivakar/Fi1e-EncRypt0R/blob/master/images/Screenshot%20from%202020-10-01%2021-22-14.png
+[img4]:https://github.com/rexdivakar/Fi1e-EncRypt0R/blob/master/images/Screenshot%20from%202020-10-01%2021-24-53.png
+[img5]:https://github.com/rexdivakar/Fi1e-EncRypt0R/blob/master/images/Screenshot%20from%202020-10-01%2021-26-17.png
+[img6]:https://github.com/rexdivakar/Fi1e-EncRypt0R/blob/master/images/Screenshot%20from%202020-10-01%2021-27-23.png
